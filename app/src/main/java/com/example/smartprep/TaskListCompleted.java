@@ -93,11 +93,10 @@ public class TaskListCompleted extends RecyclerView.Adapter<TaskListCompleted.Ta
             DBHelper db = new DBHelper(context);
             if ( isChecked )
             {
-                db.inserttask(task.getText().toString(),Integer.parseInt(project_id) ,Integer.parseInt(id),1,taskdata.get(DBHelper.TASK_TIMESTAMP));
+                db.updateStatus(id,1);
             }
             else{
-                db.inserttask(task.getText().toString(),Integer.parseInt(project_id) ,Integer.parseInt(id),0,taskdata.get(DBHelper.TASK_TIMESTAMP));
-
+                db.updateStatus(id,0);
             }
             ((Project)context).onResume();
         }
@@ -106,7 +105,14 @@ public class TaskListCompleted extends RecyclerView.Adapter<TaskListCompleted.Ta
         @Override
         public void onClick(View v) {
             if(v==task){
-                //
+                Intent intent = new Intent(context,ViewTask.class);
+                intent.putExtra("task",task.getText().toString());
+                intent.putExtra("id",id);
+                intent.putExtra("projectid",project_id);
+                intent.putExtra("status",status);
+                intent.putExtra(DBHelper.TASK_LOCATION, taskdata.get(DBHelper.TASK_LOCATION));
+                intent.putExtra(DBHelper.TASK_TIMESTAMP, taskdata.get(DBHelper.TASK_TIMESTAMP));
+                context.startActivity(intent);
                 return;
             }
             TextView buttonViewOption = itemView.findViewById(R.id.taskoptions);
@@ -121,7 +127,14 @@ public class TaskListCompleted extends RecyclerView.Adapter<TaskListCompleted.Ta
                     switch (item.getItemId()) {
                         case R.id.open:
                             //handle menu1 click
-
+                            intent = new Intent(context,ViewTask.class);
+                            intent.putExtra("task",task.getText().toString());
+                            intent.putExtra("id",id);
+                            intent.putExtra("projectid",project_id);
+                            intent.putExtra("status",status);
+                            intent.putExtra(DBHelper.TASK_LOCATION, taskdata.get(DBHelper.TASK_LOCATION));
+                            intent.putExtra(DBHelper.TASK_TIMESTAMP, taskdata.get(DBHelper.TASK_TIMESTAMP));
+                            context.startActivity(intent);
                             return true;
                         case R.id.edit:
                             //handle menu2 click
@@ -130,6 +143,8 @@ public class TaskListCompleted extends RecyclerView.Adapter<TaskListCompleted.Ta
                             intent.putExtra("id",id);
                             intent.putExtra("projectid",project_id);
                             intent.putExtra("status",status);
+                            intent.putExtra(DBHelper.TASK_LOCATION, taskdata.get(DBHelper.TASK_LOCATION));
+                            intent.putExtra(DBHelper.TASK_TIMESTAMP, taskdata.get(DBHelper.TASK_TIMESTAMP));
                             context.startActivity(intent);
                             return true;
                         case R.id.remove:

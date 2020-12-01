@@ -33,10 +33,12 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String TASK_PROJECT = "project";
     public static final String TASK_STATUS = "status";
     public static final String TASK_TIMESTAMP = "timestamp";
+    public static final String TASK_LOCATION = "location";
+    public static final String TASK_IMAGE = "image";
 
 
     public DBHelper(Context context) {
-        super(context, DATABASE_NAME , null, 12);
+        super(context, DATABASE_NAME , null, 13);
     }
 
     @Override
@@ -56,7 +58,7 @@ public class DBHelper extends SQLiteOpenHelper {
         );
         db.execSQL(
                 "create table tasks " +
-                        "(id integer primary key,task text,project integer,status integer,timestamp text,image BLOB);"
+                        "(id integer primary key,task text,project integer,status integer,timestamp text,image BLOB,location text);"
         );
     }
 
@@ -217,13 +219,15 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean inserttask (String task, int project, int id,int status, String timestamp) {
+    public boolean inserttask (String task, int project, int id,int status, String timestamp,String location,byte[] img) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TASK_TEXT, task);
         contentValues.put(TASK_PROJECT, project);
         contentValues.put(TASK_STATUS, status);
         contentValues.put(TASK_TIMESTAMP, timestamp);
+        contentValues.put(TASK_LOCATION, location);
+        contentValues.put(TASK_IMAGE, img);
         if(id!=0){
             contentValues.put(TASK_ID,id);
         }
@@ -255,10 +259,32 @@ public class DBHelper extends SQLiteOpenHelper {
             hm.put(TASK_TEXT, res.getString(res.getColumnIndex(TASK_TEXT)));
             hm.put(TASK_STATUS, res.getString(res.getColumnIndex(TASK_STATUS)));
             hm.put(TASK_TIMESTAMP, res.getString(res.getColumnIndex(TASK_TIMESTAMP)));
+            hm.put(TASK_LOCATION, res.getString(res.getColumnIndex(TASK_LOCATION)));
             array_list.add(hm);
             ///array_list.add(res.getString(res.getColumnIndex(PROJECTS_NAME)));
             res.moveToNext();
         }
         return array_list;
+    }
+
+    public void updateStatus (String id, int status) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TASK_STATUS, status);
+        db.update(TASK_TABLE_NAME, contentValues, "id = ? ", new String[] { id } );
+        Log.d("update task ", String.valueOf(id));
+    }
+
+    public byte[] taskImage (String id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from tasks where id="+id, null );
+        res.moveToFirst();
+        Log.d("getTaskImage ", id);
+        byte[] img = { (byte) 204, 29, (byte) 207, (byte) 217 };
+        if(res.getCount() > 0) {
+            img = res.getBlob(res.getColumnIndex(TASK_IMAGE));
+            return  img;
+        }
+        return img;
     }
 }

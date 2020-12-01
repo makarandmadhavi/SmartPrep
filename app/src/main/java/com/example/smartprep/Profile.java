@@ -89,4 +89,8 @@ public class Profile extends AppCompatActivity {
         db.updateDisplayname(user.get("id"),name);
         finish();
     }
+
+    public void changePassword(View view) {
+        finish();
+    }
 }

@@ -177,8 +177,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             startActivity(intent);
         }
         else {
-            Toast.makeText(this, "Logged in",
-                    Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "Logged in",
+//                    Toast.LENGTH_LONG).show();
             greeting.setText("Hello "+user.get("name")+"!");
 
             dp.setImageBitmap(getImage(mydb.getDp(user.get("id"))));

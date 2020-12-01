@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CreateTask">
+    tools:context=".ViewTask">
 
     <TextView
         android:id="@+id/taskcreate"
@@ -12,16 +12,16 @@
         android:layout_height="wrap_content"
         android:background="@color/ic_launcher_background"
         android:paddingVertical="8dp"
-        android:text="Add task"
+        android:text="Task"
         android:textAlignment="center"
         android:textColor="@android:color/background_light"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Add task" />
+        tools:text="Task" />
 
-    <EditText
+    <TextView
         android:id="@+id/tasktext"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -31,97 +31,82 @@
         android:ems="10"
         android:hint="Add task"
         android:inputType="textPersonName"
+        android:textAlignment="center"
+        android:textSize="28sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/projectname" />
-
-    <Button
-        android:id="@+id/button_create_project"
-        style="@style/button"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:onClick="createTask"
-        android:text="Add"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/projectname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/taskcreate" />
 
     <TextView
         android:id="@+id/datetime"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="Reminder not set"
-        app:layout_constraintBaseline_toBaselineOf="@+id/button"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/button"
-        style="@style/button"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:onClick="setDateTime"
-        android:text="set Reminder"
+        android:text="Reminder not set"
+        android:textAlignment="center"
+        android:textSize="28sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tasktext" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
-    <Button
-        android:id="@+id/locationbutton"
-        style="@style/button"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:onClick="addLocation"
-        android:text="Add location"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
-
-    <EditText
+    <TextView
         android:id="@+id/showLocation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:hint="Search"
-        app:layout_constraintBaseline_toBaselineOf="@+id/locationbutton"
-        app:layout_constraintEnd_toStartOf="@+id/locationbutton"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:textAlignment="center"
+        android:textSize="28sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <ImageView
         android:id="@+id/taskpic"
-        android:layout_width="175dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/showLocation"
         tools:srcCompat="@tools:sample/avatars"
         android:onClick="openImage"/>
 
-    <Button
-        android:id="@+id/button2"
-        style="@style/button"
-        android:layout_width="150dp"
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:onClick="selectImage"
-        android:text="Add Image"
+        android:layout_marginTop="16dp"
+        android:text="Reminder"
+        android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/locationbutton" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tasktext" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Location"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/datetime" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

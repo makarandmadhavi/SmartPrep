@@ -36,7 +36,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         this.project_id = project_id;
     }
 
-
     @NonNull
     @Override
     public TaskListAdapter.TaskViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -91,10 +90,9 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
             boolean isChecked = check.isChecked();
             DBHelper db = new DBHelper(context);
             if (isChecked) {
-                db.inserttask(task.getText().toString(), Integer.parseInt(project_id), Integer.parseInt(id), 1,taskdata.get(DBHelper.TASK_TIMESTAMP));
+                db.updateStatus(id,1);
             } else {
-                db.inserttask(task.getText().toString(), Integer.parseInt(project_id), Integer.parseInt(id), 0,taskdata.get(DBHelper.TASK_TIMESTAMP));
-
+                db.updateStatus(id,0);
             }
             ((Project) context).onResume();
         }
@@ -103,7 +101,14 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         @Override
         public void onClick(View v) {
             if (v == task) {
-                //
+                Intent intent = new Intent(context,ViewTask.class);
+                intent.putExtra("task", task.getText().toString());
+                intent.putExtra("id", id);
+                intent.putExtra("projectid", project_id);
+                intent.putExtra("status", status);
+                intent.putExtra(DBHelper.TASK_TIMESTAMP, taskdata.get(DBHelper.TASK_TIMESTAMP));
+                intent.putExtra(DBHelper.TASK_LOCATION, taskdata.get(DBHelper.TASK_LOCATION));
+                context.startActivity(intent);
                 return;
             }
             TextView buttonViewOption = itemView.findViewById(R.id.taskoptions);
@@ -118,7 +123,14 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
                     switch (item.getItemId()) {
                         case R.id.open:
                             //handle menu1 click
-
+                            intent = new Intent(context,ViewTask.class);
+                            intent.putExtra("task", task.getText().toString());
+                            intent.putExtra("id", id);
+                            intent.putExtra("projectid", project_id);
+                            intent.putExtra("status", status);
+                            intent.putExtra(DBHelper.TASK_TIMESTAMP, taskdata.get(DBHelper.TASK_TIMESTAMP));
+                            intent.putExtra(DBHelper.TASK_LOCATION, taskdata.get(DBHelper.TASK_LOCATION));
+                            context.startActivity(intent);
                             return true;
                         case R.id.edit:
                             //handle menu2 click
@@ -128,6 +140,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
                             intent.putExtra("projectid", project_id);
                             intent.putExtra("status", status);
                             intent.putExtra(DBHelper.TASK_TIMESTAMP, taskdata.get(DBHelper.TASK_TIMESTAMP));
+                            intent.putExtra(DBHelper.TASK_LOCATION, taskdata.get(DBHelper.TASK_LOCATION));
                             context.startActivity(intent);
                             return true;
                         case R.id.remove:
