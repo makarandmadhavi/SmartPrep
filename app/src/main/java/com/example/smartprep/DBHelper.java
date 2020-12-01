@@ -16,6 +16,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "ProjectsDB.db";
     public static final String PROJECTS_TABLE_NAME = "projects";
     public static final String PROJECTS_ID = "id";
+    public static final String PROJECTS_USER = "userid";
     public static final String PROJECTS_NAME = "name";
     public static final String PROJECTS_DESCRIPTION = "description";
 
@@ -24,16 +25,18 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String USER_ID = "id";
     public static final String USER_NAME = "name";
     public static final String USER_PASSWORD = "password";
+    public static final String USER_PIC = "profilepic";
 
     public static final String TASK_TABLE_NAME = "tasks";
     public static final String TASK_TEXT = "task";
     public static final String TASK_ID = "id";
     public static final String TASK_PROJECT = "project";
     public static final String TASK_STATUS = "status";
+    public static final String TASK_TIMESTAMP = "timestamp";
 
 
     public DBHelper(Context context) {
-        super(context, DATABASE_NAME , null, 4);
+        super(context, DATABASE_NAME , null, 12);
     }
 
     @Override
@@ -41,19 +44,19 @@ public class DBHelper extends SQLiteOpenHelper {
         // TODO Auto-generated method stub
         db.execSQL(
                 "create table projects " +
-                        "(id integer primary key, name text,description text,userid text);"
+                        "(id integer primary key, name text,description text,userid integer);"
         );
         db.execSQL(
                 "create table user " +
-                        "(id integer primary key,name text,username text,password text);"
+                        "(id integer primary key,name text,username text,password text, profilepic BLOB);"
         );
         db.execSQL(
                 "create table login " +
-                        "(id integer primary key,name text,username text,password text);"
+                        "(id integer primary key,name text,username text,password text, profilepic BLOB);"
         );
         db.execSQL(
                 "create table tasks " +
-                        "(id integer primary key,task text,project integer,status integer);"
+                        "(id integer primary key,task text,project integer,status integer,timestamp text,image BLOB);"
         );
     }
 
@@ -67,15 +70,80 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void login (String name, String username,String password , int id) {
+    public boolean insertUser (String name, String username,String password , int id, byte[] pic) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(USER_NAME, name);
+        contentValues.put(USER_USERNAME, username);
+        contentValues.put(USER_PASSWORD, password);
+        contentValues.put(USER_PIC,pic);
+        if(id!=0){
+            contentValues.put(USER_ID,id);
+        }
+        db.insertWithOnConflict(USER_TABLE_NAME, null,contentValues, SQLiteDatabase.CONFLICT_REPLACE);
+        Log.d(TAG,"inserted" + name);
+        return true;
+    }
+
+    public HashMap<String, String> getUser(String username, String password) {
+        //ArrayList<String> array_list = new ArrayList<String>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from user where "+USER_USERNAME+"='"+username+"' and password='"+password+"'", null );
+        res.moveToFirst();
+        if(res.getCount() > 0){
+            HashMap<String,String> hm= new HashMap<String,String>();
+            hm.put(USER_USERNAME, res.getString(res.getColumnIndex(USER_USERNAME)));
+            hm.put(USER_NAME, res.getString(res.getColumnIndex(USER_NAME)));
+            hm.put(USER_ID, res.getString(res.getColumnIndex(USER_ID)));
+            Log.d("getuser ", String.valueOf(res.getString(res.getColumnIndex(USER_ID))));
+            return hm;
+        }
+        return null;
+    }
+
+    public void login (String name, String username,String password , int id, byte[] pic) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(USER_NAME, name);
         contentValues.put(USER_USERNAME, username);
         contentValues.put(USER_PASSWORD, password);
         contentValues.put(USER_ID,id);
+        contentValues.put(USER_PIC,pic);
+        Log.d("login ", String.valueOf(id));
         db.insertWithOnConflict("login", null,contentValues, SQLiteDatabase.CONFLICT_REPLACE);
-        Log.d(TAG,"inserted" + name);
+        Log.d(TAG,"login" + name);
+    }
+
+    public boolean updateDp (String id, byte[] img) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(USER_PIC, img);
+        db.update("user", contentValues, "id = ? ", new String[] { id } );
+        db.update("login", contentValues, "id = ? ", new String[] { id } );
+        Log.d("updatepic ", String.valueOf(id));
+        return true;
+    }
+
+    public boolean updateDisplayname (String id, String name) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(USER_NAME, name);
+        db.update("user", contentValues, "id = ? ", new String[] { id } );
+        db.update("login", contentValues, "id = ? ", new String[] { id } );
+        Log.d("update name ", String.valueOf(id));
+        return true;
+    }
+
+    public byte[] getDp (String id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res =  db.rawQuery( "select * from user where id="+id, null );
+        res.moveToFirst();
+        Log.d("getdp ", id);
+        if(res.getCount() > 0) {
+            byte[] img = res.getBlob(res.getColumnIndex(USER_PIC));
+            return  img;
+        }
+        return null;
     }
 
     public void logout () {
@@ -95,6 +163,7 @@ public class DBHelper extends SQLiteOpenHelper {
             hm.put(USER_USERNAME, res.getString(res.getColumnIndex(USER_USERNAME)));
             hm.put(USER_NAME, res.getString(res.getColumnIndex(USER_NAME)));
             hm.put(USER_ID, res.getString(res.getColumnIndex(USER_ID)));
+            Log.d("checklogin ", res.getString(res.getColumnIndex(USER_ID)));
             return hm;
         }
         return null;
@@ -105,6 +174,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(PROJECTS_NAME, name);
         contentValues.put(PROJECTS_DESCRIPTION, description);
+        contentValues.put(PROJECTS_USER, checklogin().get(USER_ID));
         if(id!=0){
             contentValues.put(PROJECTS_ID,id);
         }
@@ -131,7 +201,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ArrayList<HashMap<String,String>> array_list = new ArrayList<HashMap<String,String>>();
         //ArrayList<String> array_list = new ArrayList<String>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from projects", null );
+        Cursor res =  db.rawQuery( "select * from projects where userid="+checklogin().get(USER_ID), null );
         res.moveToFirst();
 
         while(res.isAfterLast() == false){
@@ -146,41 +216,14 @@ public class DBHelper extends SQLiteOpenHelper {
         return array_list;
     }
 
-    public boolean insertUser (String name, String username,String password , int id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(USER_NAME, name);
-        contentValues.put(USER_USERNAME, username);
-        contentValues.put(USER_PASSWORD, password);
-        if(id!=0){
-            contentValues.put(USER_ID,id);
-        }
-        db.insertWithOnConflict(USER_TABLE_NAME, null,contentValues, SQLiteDatabase.CONFLICT_REPLACE);
-        Log.d(TAG,"inserted" + name);
-        return true;
-    }
 
-    public HashMap<String, String> getUser(String username, String password) {
-        //ArrayList<String> array_list = new ArrayList<String>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from user where "+USER_USERNAME+"='"+username+"' and password='"+password+"'", null );
-        res.moveToFirst();
-        if(res.getCount() > 0){
-            HashMap<String,String> hm= new HashMap<String,String>();
-            hm.put(USER_USERNAME, res.getString(res.getColumnIndex(USER_USERNAME)));
-            hm.put(USER_NAME, res.getString(res.getColumnIndex(USER_NAME)));
-            hm.put(USER_ID, res.getString(res.getColumnIndex(USER_ID)));
-            return hm;
-        }
-        return null;
-    }
-
-    public boolean inserttask (String task, int project, int id,int status) {
+    public boolean inserttask (String task, int project, int id,int status, String timestamp) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TASK_TEXT, task);
         contentValues.put(TASK_PROJECT, project);
         contentValues.put(TASK_STATUS, status);
+        contentValues.put(TASK_TIMESTAMP, timestamp);
         if(id!=0){
             contentValues.put(TASK_ID,id);
         }
@@ -211,6 +254,7 @@ public class DBHelper extends SQLiteOpenHelper {
             hm.put(TASK_ID, res.getString(res.getColumnIndex(TASK_ID)));
             hm.put(TASK_TEXT, res.getString(res.getColumnIndex(TASK_TEXT)));
             hm.put(TASK_STATUS, res.getString(res.getColumnIndex(TASK_STATUS)));
+            hm.put(TASK_TIMESTAMP, res.getString(res.getColumnIndex(TASK_TIMESTAMP)));
             array_list.add(hm);
             ///array_list.add(res.getString(res.getColumnIndex(PROJECTS_NAME)));
             res.moveToNext();

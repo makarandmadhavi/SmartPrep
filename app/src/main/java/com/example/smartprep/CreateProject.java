@@ -15,7 +15,7 @@ public class CreateProject extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_project);
         name = (EditText) findViewById(R.id.tasktext);
-        description = (EditText) findViewById(R.id.edit_project_description);
+        description = (EditText) findViewById(R.id.displayname);
     }
 
     public void createProject(View view) {

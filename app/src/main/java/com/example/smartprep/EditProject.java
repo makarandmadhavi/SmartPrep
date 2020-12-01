@@ -21,7 +21,7 @@ public class EditProject extends AppCompatActivity {
         String name = intent.getStringExtra("name");
         String description = intent.getStringExtra("description");
         projectname = findViewById(R.id.tasktext);
-        projectdesc = findViewById(R.id.edit_project_description);
+        projectdesc = findViewById(R.id.displayname);
         projectname.setText(name);
         projectdesc.setText(description);
 

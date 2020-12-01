@@ -11,7 +11,7 @@
     tools:context=".Register">
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/greeting"
         android:layout_width="331dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -47,10 +47,10 @@
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
+        app:layout_constraintTop_toBottomOf="@+id/greeting" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/dp"
         android:layout_width="136dp"
         android:layout_height="126dp"
         android:layout_marginTop="72dp"
@@ -69,7 +69,7 @@
         android:textSize="28sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/dp" />
 
     <Button
         android:id="@+id/register"

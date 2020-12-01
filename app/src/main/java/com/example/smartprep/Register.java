@@ -4,7 +4,6 @@ package com.example.smartprep;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,10 +17,10 @@ public class Register extends AppCompatActivity {
 
     public void register(View view) {
         EditText name = (EditText) findViewById(R.id.name);
-        EditText usernamename = (EditText) findViewById(R.id.username);
+        EditText usernamename = (EditText) findViewById(R.id.greeting);
         EditText password = (EditText) findViewById(R.id.password);
         DBHelper db = new DBHelper(view.getContext());
-        db.insertUser(name.getText().toString(),usernamename.getText().toString(),password.getText().toString(),0);
+        db.insertUser(name.getText().toString(),usernamename.getText().toString(),password.getText().toString(),0,null);
         finish();
     }
 }

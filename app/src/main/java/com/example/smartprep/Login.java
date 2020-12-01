@@ -8,8 +8,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.HashMap;
 
 public class Login extends AppCompatActivity {
@@ -23,11 +21,12 @@ public class Login extends AppCompatActivity {
     }
 
     public void login(View view) {
-        EditText username = (EditText) findViewById(R.id.username);
+        EditText username = (EditText) findViewById(R.id.greeting);
         EditText password = (EditText) findViewById(R.id.password);
         HashMap<String,String> user = db.getUser(username.getText().toString(),password.getText().toString());
+
         if(user!=null){
-            db.login(user.get("name"),user.get("username"),user.get("password"),Integer.parseInt(user.get("id")));
+            db.login(user.get("name"),user.get("username"),user.get("password"),Integer.parseInt(user.get("id")),db.getDp(user.get("id")));
             finish();
         }
         else {

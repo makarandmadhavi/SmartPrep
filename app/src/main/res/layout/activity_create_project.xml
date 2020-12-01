@@ -46,7 +46,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tasktext" />
 
     <EditText
-        android:id="@+id/edit_project_description"
+        android:id="@+id/displayname"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -66,7 +66,7 @@
         android:text="Create"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_project_description"
+        app:layout_constraintTop_toBottomOf="@+id/displayname"
         style="@style/button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

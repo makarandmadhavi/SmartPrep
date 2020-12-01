@@ -52,6 +52,7 @@ public class TaskListCompleted extends RecyclerView.Adapter<TaskListCompleted.Ta
         taskViewHolder.task.setText(mCurrent.get("task"));
         taskViewHolder.id = mCurrent.get("id");
         taskViewHolder.status = mCurrent.get("status");
+        taskViewHolder.taskdata = new HashMap<String, String>(mCurrent);
         if(taskViewHolder.status.equals("1")){
             taskViewHolder.check.setChecked(true);
         }
@@ -71,6 +72,7 @@ public class TaskListCompleted extends RecyclerView.Adapter<TaskListCompleted.Ta
         public String id;
         public String status;
         public CheckBox check;
+        public HashMap<String,String> taskdata;
 
         public TaskViewHolder(@NonNull View itemView, TaskListCompleted adapter) {
             super(itemView);
@@ -91,10 +93,10 @@ public class TaskListCompleted extends RecyclerView.Adapter<TaskListCompleted.Ta
             DBHelper db = new DBHelper(context);
             if ( isChecked )
             {
-                db.inserttask(task.getText().toString(),Integer.parseInt(project_id) ,Integer.parseInt(id),1);
+                db.inserttask(task.getText().toString(),Integer.parseInt(project_id) ,Integer.parseInt(id),1,taskdata.get(DBHelper.TASK_TIMESTAMP));
             }
             else{
-                db.inserttask(task.getText().toString(),Integer.parseInt(project_id) ,Integer.parseInt(id),0);
+                db.inserttask(task.getText().toString(),Integer.parseInt(project_id) ,Integer.parseInt(id),0,taskdata.get(DBHelper.TASK_TIMESTAMP));
 
             }
             ((Project)context).onResume();

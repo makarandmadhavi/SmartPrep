@@ -38,11 +38,14 @@
     <Button
         android:id="@+id/button_create_project"
         style="@style/button"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:onClick="createTask"
         android:text="Add"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tasktext" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/projectname"
@@ -53,5 +56,25 @@
         android:text="TextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/taskcreate" />
+
+    <TextView
+        android:id="@+id/datetime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Date Time"
+        app:layout_constraintBaseline_toBaselineOf="@+id/button"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:onClick="setDateTime"
+        android:text="set Reminder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/datetime"
+        app:layout_constraintTop_toBottomOf="@+id/tasktext" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

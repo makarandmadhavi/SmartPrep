@@ -52,6 +52,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         taskViewHolder.task.setText(mCurrent.get("task"));
         taskViewHolder.id = mCurrent.get("id");
         taskViewHolder.status = mCurrent.get("status");
+        taskViewHolder.taskdata = new HashMap<String, String>(mCurrent);
         if (taskViewHolder.status.equals("1")) {
             taskViewHolder.check.setChecked(true);
         }
@@ -70,6 +71,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
         public String id;
         public String status;
         public CheckBox check;
+        public HashMap<String,String> taskdata;
 
         public TaskViewHolder(@NonNull View itemView, TaskListAdapter adapter) {
             super(itemView);
@@ -89,9 +91,9 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
             boolean isChecked = check.isChecked();
             DBHelper db = new DBHelper(context);
             if (isChecked) {
-                db.inserttask(task.getText().toString(), Integer.parseInt(project_id), Integer.parseInt(id), 1);
+                db.inserttask(task.getText().toString(), Integer.parseInt(project_id), Integer.parseInt(id), 1,taskdata.get(DBHelper.TASK_TIMESTAMP));
             } else {
-                db.inserttask(task.getText().toString(), Integer.parseInt(project_id), Integer.parseInt(id), 0);
+                db.inserttask(task.getText().toString(), Integer.parseInt(project_id), Integer.parseInt(id), 0,taskdata.get(DBHelper.TASK_TIMESTAMP));
 
             }
             ((Project) context).onResume();
@@ -125,6 +127,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskVi
                             intent.putExtra("id", id);
                             intent.putExtra("projectid", project_id);
                             intent.putExtra("status", status);
+                            intent.putExtra(DBHelper.TASK_TIMESTAMP, taskdata.get(DBHelper.TASK_TIMESTAMP));
                             context.startActivity(intent);
                             return true;
                         case R.id.remove:
