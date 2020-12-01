@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="Set Current Location"
+        android:id="@+id/current"/>
+    <item android:title="search location"
+        android:id="@+id/search"/>
+</menu>
