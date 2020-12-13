@@ -18,8 +18,9 @@ public class Viewimage extends AppCompatActivity {
         setContentView(R.layout.activity_viewimage);
         ImageView imgv = findViewById(R.id.imageView2);
         Intent intent = getIntent();
-        byte[] img = intent.getByteArrayExtra("img");
-        imgv.setImageBitmap(getImage(img));
+        DBHelper db = new DBHelper(this);
+        Bitmap img = getImage(db.taskImage(intent.getStringExtra("id")));
+        imgv.setImageBitmap(img);
     }
 
 

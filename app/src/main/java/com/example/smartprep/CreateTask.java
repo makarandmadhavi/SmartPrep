@@ -227,8 +227,9 @@ public class CreateTask extends AppCompatActivity implements DatePickerDialog.On
     }
 
     public void openImage(View view) {
-        Intent intent = new Intent(this,Viewimage.class);
-        intent.putExtra("img",img);
-        startActivity(intent);
+//        Intent intent = new Intent(this,Viewimage.class);
+//        intent.putExtra("id",id);
+//        startActivity(intent);
+        return;
     }
 }

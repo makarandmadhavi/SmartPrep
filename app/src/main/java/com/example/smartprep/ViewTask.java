@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -65,7 +66,17 @@ public class ViewTask extends AppCompatActivity {
 
     public void openImage(View view) {
         Intent intent = new Intent(ViewTask.this,Viewimage.class);
-        intent.putExtra("img",img);
+        intent.putExtra("id",id);
         startActivity(intent);
+    }
+
+    public void openLocation(View view) {
+        GPSTracker gpstracker = new GPSTracker(this);
+        latitude = gpstracker.getLatitude();
+        longitude = gpstracker.getLongitude();
+        Uri gmmIntentUri = Uri.parse("geo:19.2163789,72.9618969" + "?q=" + Uri.encode(showLocation.getText().toString()));
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        startActivity(mapIntent);
     }
 }

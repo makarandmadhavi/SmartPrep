@@ -191,7 +191,7 @@ public class EditTask extends AppCompatActivity implements DatePickerDialog.OnDa
 
     public void openImage(View view) {
         Intent intent = new Intent(this,Viewimage.class);
-        intent.putExtra("img",img);
+        intent.putExtra("id",id);
         startActivity(intent);
     }
 }
